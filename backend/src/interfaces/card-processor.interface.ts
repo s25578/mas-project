@@ -1,3 +1,3 @@
-export interface CardProcessor {
+export interface CardProcessorInterface {
     processCardPayment(amount: number): void;
 }

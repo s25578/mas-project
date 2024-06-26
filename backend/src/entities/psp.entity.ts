@@ -1,11 +1,11 @@
 import {BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {Transaction} from './transaction.entity';
 import {PSPRole} from "../enums/psp-role.enum";
-import {CardProcessor} from "../interfaces/card-processor.interface";
-import {BankTransferProcessor} from "../interfaces/bank-processor.interface";
+import {CardProcessorInterface} from "../interfaces/card-processor.interface";
+import {BankTransferProcessorInterface} from "../interfaces/bank-processor.interface";
 
 @Entity()
-export class PSP implements CardProcessor, BankTransferProcessor {
+export class PSP implements CardProcessorInterface, BankTransferProcessorInterface {
     @PrimaryGeneratedColumn()
     id: number;
 
