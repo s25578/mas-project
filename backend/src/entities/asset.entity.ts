@@ -39,9 +39,9 @@ export class Asset {
     @OneToMany(() => Position, position => position.asset)
     positions: Position[];
 
-    constructor(name: string, tag: string[], status: AssetStatus, market: Market, priceProvider: PriceProvider, marketProvider: MarketProvider, description?: string) {
+    constructor(name: string, tags: string[], status: AssetStatus, market: Market, priceProvider: PriceProvider, marketProvider: MarketProvider, description?: string) {
         this.name = name;
-        this.tags = tag;
+        this.tags = tags;
         this.market = market;
         this.priceProvider = priceProvider;
         this.marketProvider = marketProvider;

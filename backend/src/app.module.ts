@@ -21,11 +21,15 @@ import {AccountService} from "./services/account.service";
     TypeOrmModule.forRoot({
       name: 'default',
       type: 'sqlite',
-      database: 'database.sqlite',
+      database: 'trading.db',
       synchronize: true,
+      logging: true,
       entities: [
         __dirname + '/**/*.entity{.ts,.js}',
       ],
+      cache: {
+        duration: 1000
+      },
       subscribers: [],
       migrations: [],
     }),

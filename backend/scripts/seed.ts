@@ -19,7 +19,15 @@ import {AllowedAsset} from "../src/entities/allowed-asset.entity";
 
 async function seed() {
 
-    await AppDataSource.initialize();
+    await AppDataSource.initialize().then(async () => {
+        console.log("Data Source has been initialized!");
+
+        // Force synchronize schema
+        await AppDataSource.synchronize(true);
+        console.log("Database schema synchronized");
+    })
+    .catch((error) => console.log(error));
+    
 
     const adminRepository = AppDataSource.getRepository(Admin);
     const managerRepository = AppDataSource.getRepository(Manager);
@@ -46,30 +54,81 @@ async function seed() {
     // add Markets and Assets
     const marketRepository = AppDataSource.getRepository(Market);
 
-    const market1 = new Market('Crypto');
-    const market2 = new Market('Stocks');
+    const cryptoMarket = new Market('Crypto');
+    const stockMarket = new Market('Stocks');
+    const forexMarket = new Market('Forex');
+    const commodityMarket = new Market('Commodities');
+    const indexMarket = new Market('Indices');
+    const optionMarket = new Market('Options');
 
-    await marketRepository.save(market1);
-    await marketRepository.save(market2);
+    await marketRepository.save(cryptoMarket);
+    await marketRepository.save(stockMarket);
+    await marketRepository.save(forexMarket);
+    await marketRepository.save(commodityMarket);
+    await marketRepository.save(indexMarket);
+    await marketRepository.save(optionMarket);
 
     const assetRepository = AppDataSource.getRepository(Asset);
 
-    const asset2 = new Asset('AAPL', ['Tech'], AssetStatus.ACTIVE, market1, null, null);
-    const asset1 = new Asset('BTCUSDT', ['Coin'], AssetStatus.ACTIVE, market2, null, null);
-    const asset3 = new Asset('ETHUSDT', ['Token'], AssetStatus.ACTIVE, market2, null, null);
+    const assets = [
+        // crypto
+        new Asset('BTCUSDT', ['Coin'], AssetStatus.ACTIVE, cryptoMarket, null, null),
+        new Asset('ETHUSDT', ['Token'], AssetStatus.ACTIVE, cryptoMarket, null, null),
+        new Asset('BNBUSDT', ['Token'], AssetStatus.ACTIVE, cryptoMarket, null, null),
+        new Asset('ADAUSDT', ['Token'], AssetStatus.ACTIVE, cryptoMarket, null, null),
+        new Asset('XRPUSDT', ['Token'], AssetStatus.ACTIVE, cryptoMarket, null, null),
+        new Asset('DOGEUSDT', ['Token', 'Meme'], AssetStatus.ACTIVE, cryptoMarket, null, null),
+        new Asset('DOTUSDT', ['Token'], AssetStatus.ACTIVE, cryptoMarket, null, null),
+        new Asset('UNIUSDT', ['Token'], AssetStatus.ACTIVE, cryptoMarket, null, null),
+        new Asset('LTCUSDT', ['Coin'], AssetStatus.ACTIVE, cryptoMarket, null, null),
 
-    await assetRepository.save(asset1);
-    await assetRepository.save(asset2);
-    await assetRepository.save(asset3);
+        // stocks
+        new Asset('AAPL', ['Tech'], AssetStatus.ACTIVE, stockMarket, null, null),
+        new Asset('AMZN', ['Tech'], AssetStatus.ACTIVE, stockMarket, null, null),
+        new Asset('TSLA', ['Tech'], AssetStatus.ACTIVE, stockMarket, null, null),
+        new Asset('MSFT', ['Tech'], AssetStatus.ACTIVE, stockMarket, null, null),
+        new Asset('GOOGL', ['Tech'], AssetStatus.ACTIVE, stockMarket, null, null),
+        new Asset('FB', ['Tech'], AssetStatus.ACTIVE, stockMarket, null, null),
+        new Asset('BABA', ['Tech'], AssetStatus.ACTIVE, stockMarket, null, null),
+        new Asset('NVDA', ['Tech'], AssetStatus.ACTIVE, stockMarket, null, null),
+        new Asset('TSM', ['Tech'], AssetStatus.ACTIVE, stockMarket, null, null),
+
+        // forex
+        new Asset('EURUSD', ['Forex'], AssetStatus.ACTIVE, forexMarket, null, null),
+        new Asset('GBPUSD', ['Forex'], AssetStatus.ACTIVE, forexMarket, null, null),
+        new Asset('USDJPY', ['Forex'], AssetStatus.ACTIVE, forexMarket, null, null),
+        new Asset('AUDUSD', ['Forex'], AssetStatus.ACTIVE, forexMarket, null, null),
+        new Asset('USDCAD', ['Forex'], AssetStatus.ACTIVE, forexMarket, null, null),
+
+        // commodities
+        new Asset('XAUUSD', ['Commodity'], AssetStatus.ACTIVE, commodityMarket, null, null),
+        new Asset('XAGUSD', ['Commodity'], AssetStatus.ACTIVE, commodityMarket, null, null),
+        new Asset('XPTUSD', ['Commodity'], AssetStatus.ACTIVE, commodityMarket, null, null),
+        new Asset('XPDUSD', ['Commodity'], AssetStatus.ACTIVE, commodityMarket, null, null),
+
+        // indices
+        new Asset('US30', ['Index'], AssetStatus.ACTIVE, indexMarket, null, null),
+        new Asset('SPX500', ['Index'], AssetStatus.ACTIVE, indexMarket, null, null),
+        new Asset('NAS100', ['Index'], AssetStatus.ACTIVE, indexMarket, null, null),
+        new Asset('UK100', ['Index'], AssetStatus.ACTIVE, indexMarket, null, null),
+        new Asset('GER30', ['Index'], AssetStatus.ACTIVE, indexMarket, null, null),
+        new Asset('JPN225', ['Index'], AssetStatus.ACTIVE, indexMarket, null, null),
+
+        // options
+        new Asset('AAPL', ['Tech'], AssetStatus.ACTIVE, optionMarket, null, null),
+        new Asset('AMZN', ['Tech'], AssetStatus.ACTIVE, optionMarket, null, null),
+    ];
+
+    for (let asset of assets) {
+        console.log('Saving asset', asset);
+        await assetRepository.save(asset);
+    }
 
     // Allowed assets
     const allowedAssetRepository = AppDataSource.getRepository(AllowedAsset);
-    const allowedAsset1 = new AllowedAsset(trader1, asset1, 1);
-    const allowedAsset2 = new AllowedAsset(trader1, asset2, 1)
-    const allowedAsset3 = new AllowedAsset(trader1, asset3, 1);
-    await allowedAssetRepository.save(allowedAsset1);
-    await allowedAssetRepository.save(allowedAsset2);
-    await allowedAssetRepository.save(allowedAsset3);
+    for (let asset of assets) {
+        await allowedAssetRepository.save(new AllowedAsset(trader1, asset, 1));
+    }
 
     await AppDataSource.destroy();
 }
