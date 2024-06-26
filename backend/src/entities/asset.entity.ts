@@ -16,7 +16,7 @@ export class Asset {
     name: string;
 
     @Column("simple-array")
-    tag: string[];
+    tags: string[];
 
     @Column({ nullable: true })
     description: string | null;
@@ -41,7 +41,7 @@ export class Asset {
 
     constructor(name: string, tag: string[], status: AssetStatus, market: Market, priceProvider: PriceProvider, marketProvider: MarketProvider, description?: string) {
         this.name = name;
-        this.tag = tag;
+        this.tags = tag;
         this.market = market;
         this.priceProvider = priceProvider;
         this.marketProvider = marketProvider;
