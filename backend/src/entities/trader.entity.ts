@@ -13,7 +13,7 @@ import { Account } from './account.entity';
 @Entity()
 export class Trader extends User {
     @Column({ nullable: true })
-    contactNumber: number;
+    contactNumber: number | null;
 
     @Column()
     countryCode: string;

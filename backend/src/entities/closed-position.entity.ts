@@ -6,11 +6,11 @@ import {Asset} from "./asset.entity";
 
 @ChildEntity()
 export class ClosedPosition extends Position {
-    @Column({ nullable: true })
-    closedAt: number | null;
+    @Column()
+    closedAt: number;
 
-    @Column({ nullable: true })
-    closePrice: number | null;
+    @Column()
+    closePrice: number;
 
     constructor(
         direction: string,
@@ -19,7 +19,7 @@ export class ClosedPosition extends Position {
         openPrice: number,
         fee: number,
         type: PositionType,
-        closePrice: number | null,
+        closePrice: number,
         account: Account,
         asset: Asset
     ) {
@@ -38,9 +38,6 @@ export class ClosedPosition extends Position {
     }
 
     getDuration(): number {
-        if (this.closedAt) {
-            return this.closedAt - this.createdAt;
-        }
-        return 0;
+        return this.closedAt - this.createdAt;
     }
 }
