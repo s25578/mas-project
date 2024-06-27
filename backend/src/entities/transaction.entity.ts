@@ -62,4 +62,11 @@ export class Transaction {
     fail(): void {
         //
     }
+
+    setReferenceId(referenceId: string | null): void {
+        if (referenceId !== null && referenceId.trim() === '') {
+            throw new Error('Reference ID cannot be empty string.');
+        }
+        this.referenceId = referenceId;
+    }
 }

@@ -65,7 +65,7 @@ const emits = defineEmits(['updateChart']);
 const newPosition = ref<Position>({
   ...props.initialPosition,
   direction: 'buy',
-  openPrice: 75245,
+  openPrice: 1,
   fee: 1,
   account: {
     id: 1,
