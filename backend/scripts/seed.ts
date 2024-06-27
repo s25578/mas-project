@@ -72,8 +72,8 @@ async function seed() {
 
     const assets = [
         // crypto
-        new Asset('BTCUSDT', ['Coin'], AssetStatus.ACTIVE, cryptoMarket, null, null),
-        new Asset('ETHUSDT', ['Token'], AssetStatus.ACTIVE, cryptoMarket, null, null),
+        new Asset('BTCUSDT', ['Coin'], AssetStatus.ACTIVE, cryptoMarket, null, null, 'This is a first coin'),
+        new Asset('ETHUSDT', ['Token'], AssetStatus.ACTIVE, cryptoMarket, null, null, 'Smart contracts father.'),
         new Asset('BNBUSDT', ['Token'], AssetStatus.ACTIVE, cryptoMarket, null, null),
         new Asset('ADAUSDT', ['Token'], AssetStatus.ACTIVE, cryptoMarket, null, null),
         new Asset('XRPUSDT', ['Token'], AssetStatus.ACTIVE, cryptoMarket, null, null),
@@ -83,7 +83,7 @@ async function seed() {
         new Asset('LTCUSDT', ['Coin'], AssetStatus.ACTIVE, cryptoMarket, null, null),
 
         // stocks
-        new Asset('AAPL', ['Tech'], AssetStatus.ACTIVE, stockMarket, null, null),
+        new Asset('AAPL', ['Tech'], AssetStatus.ACTIVE, stockMarket, null, null, 'Apple Inc. produces consumer electronics, computer software, and online services.'),
         new Asset('AMZN', ['Tech'], AssetStatus.ACTIVE, stockMarket, null, null),
         new Asset('TSLA', ['Tech'], AssetStatus.ACTIVE, stockMarket, null, null),
         new Asset('MSFT', ['Tech'], AssetStatus.ACTIVE, stockMarket, null, null),
