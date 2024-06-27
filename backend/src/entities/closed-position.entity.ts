@@ -13,17 +13,18 @@ export class ClosedPosition extends Position {
     @Column()
     closePrice: number;
 
-    constructor(openedPosition: OpenedPosition, closePrice: number) {
-        super(
-            openedPosition.direction, 
-            openedPosition.size, 
-            openedPosition.leverage, 
-            openedPosition.openPrice, 
-            openedPosition.fee, 
-            openedPosition.type as PositionType, 
-            openedPosition.account, 
-            openedPosition.asset
-        );
+    constructor(
+        direction: string,
+        size: number,
+        leverage: number,
+        openPrice: number,
+        fee: number,
+        type: PositionType,
+        closePrice: number | null,
+        account: Account,
+        asset: Asset
+    ) {
+        super(direction, size, leverage, openPrice, fee, type, account, asset);
 
         this.type = PositionType.CLOSED;
         this.closedAt = Date.now();
@@ -31,8 +32,23 @@ export class ClosedPosition extends Position {
 
         // Not delete, since Single Table Inheritance Strategy is used
         this.updateDatabase();
+    }
 
+    // static copy from OpenedPosition
+    static copy(openedPosition: OpenedPosition, closePrice: number): ClosedPosition {
+        const closedPosition = new ClosedPosition(
+            openedPosition.direction,
+            openedPosition.size,
+            openedPosition.leverage,
+            openedPosition.openPrice,
+            openedPosition.fee,
+            openedPosition.type as PositionType,
+            closePrice,
+            openedPosition.account,
+            openedPosition.asset
+        );
         openedPosition = null;
+        return closedPosition;
     }
 
     private updateDatabase(): void {

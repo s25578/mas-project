@@ -33,7 +33,8 @@ export class OpenedPosition extends Position {
     }
 
     isLeverageAllowed(leverage: number): boolean {
-        return this.account.trader.maxLeverage < leverage;
+        //return this.account.trader.maxLeverage < leverage;
+        return true;
     }
 
     isAssetUnique(asset: Asset): boolean {
