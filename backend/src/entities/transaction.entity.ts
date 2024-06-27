@@ -29,7 +29,7 @@ export class Transaction {
     @Column()
     type: string;
 
-    @ManyToOne(() => Account, account => account.transactions)
+    @ManyToOne(() => Account, account => account.transactions, { cascade: true, onDelete: 'CASCADE' })
     account: Account;
 
     @ManyToOne(() => PSP, psp => psp.transactions)

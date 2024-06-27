@@ -24,4 +24,8 @@ export class AccountService {
         }
         throw new NotFoundException('Account not found');
     }
+
+    async findPositions(account: Account): Promise<Position[]> {
+        return account.positions.sort((a, b) => a.size - b.size);
+    }
 }

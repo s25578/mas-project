@@ -16,7 +16,7 @@ export class Document {
     @Column()
     type: string; // DocumentType
 
-    @ManyToOne(() => Trader, trader => trader.documents)
+    @ManyToOne(() => Trader, trader => trader.documents, { cascade: true, onDelete: 'CASCADE' })
     trader: Trader;
 
     @Column({ type: 'bigint' })

@@ -27,11 +27,15 @@ export class Account {
 
     getAvailableBalance(): number {
         //
-        return 0;
+        return 9999999;
     }
 
     getLockedBalance(): number {
         //
         return 0;
+    }
+
+    getBalance(): number {
+        return this.getAvailableBalance() + this.getLockedBalance();
     }
 }

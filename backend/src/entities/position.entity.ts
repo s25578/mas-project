@@ -35,7 +35,7 @@ export abstract class Position {
     @Column({ default: Date.now() })
     updatedAt: number;
 
-    @ManyToOne(() => Account, (account) => account.positions)
+    @ManyToOne(() => Account, (account) => account.positions, { cascade: true, onDelete: 'CASCADE' })
     account: Account;
 
     @ManyToOne(() => Asset, (asset) => asset.positions)

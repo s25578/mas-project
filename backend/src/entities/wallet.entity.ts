@@ -15,7 +15,7 @@ export class Wallet {
     @Column({ type: 'bigint' })
     createdAt: number;
 
-    @ManyToOne(() => Trader, trader => trader.wallets)
+    @ManyToOne(() => Trader, trader => trader.wallets, { cascade: true, onDelete: 'CASCADE' })
     trader: Trader;
 
     constructor(currency: string, address: string, trader: Trader) {
