@@ -43,17 +43,17 @@ import apiClient from '../axiosConfig';
 import {defineEmits} from "vue/dist/vue";
 
 
-//const positions = ref<Position[]>([]);
-const positions = ref<Position[]>([{"pnl":"118 (+6.44%)", "direction":"buy","size":1,"leverage":1,"openPrice":1618,"fee":1,"type":"OpenedPosition","createdAt":1718888563797,"updatedAt":1718888563797,"asset":{"name":"GOLDUSD","tag":["Tech"],"description":null,"status":"active","id":2},"postponeFeeRate":0,"id":"c232783b-9a64-408a-8386-9d6e279310d1"},
+const positions = ref<Position[]>([]);
+/*const positions = ref<Position[]>([{"pnl":"118 (+6.44%)", "direction":"buy","size":1,"leverage":1,"openPrice":1618,"fee":1,"type":"OpenedPosition","createdAt":1718888563797,"updatedAt":1718888563797,"asset":{"name":"GOLDUSD","tag":["Tech"],"description":null,"status":"active","id":2},"postponeFeeRate":0,"id":"c232783b-9a64-408a-8386-9d6e279310d1"},
   {"pnl":"1,425 (+2.39%)", "direction":"sell","size":14,"leverage":2,"openPrice":220,"fee":1,"type":"OpenedPosition","createdAt":1718888603470,"updatedAt":1718888603470,"asset":{"name":"AAPL","tag":["Tech"],"description":null,"status":"active","id":2},"postponeFeeRate":0,"id":"066d65c6-584e-4665-95ca-c9f19cb54532"},
   {"pnl":"925 (+2.39%)", "direction":"buy","size":1,"leverage":1,"openPrice":1524,"fee":1,"type":"OpenedPosition","createdAt":1718889440849,"updatedAt":1718889440849,"asset":{"name":"GOLDUSD","tag":["Tech"],"description":null,"status":"active","id":2},"postponeFeeRate":0,"id":"e1b2fa76-b104-4fc7-89ac-621112f7f095"},
   {"pnl":"-253 (-4.19%)", "direction":"sell","size":2,"leverage":10,"openPrice":71262,"fee":1,"type":"OpenedPosition","createdAt":1718889689297,"updatedAt":1718889689297,"asset":{"name":"BTCUSDT","tag":["Tech"],"description":null,"status":"active","id":2},"postponeFeeRate":0,"id":"9e3b71f3-bee2-4686-9062-0b775c78ad5d"}]);
-
+*/
 const fetchPositions = async () => {
   try {
     const response = await apiClient.get('/position');
     console.log(response);
-    //positions.value = response.data;
+    positions.value = response.data;
   } catch (error) {
     console.error('Error fetching positions:', error);
   }
