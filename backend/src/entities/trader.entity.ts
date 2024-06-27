@@ -82,7 +82,7 @@ export class Trader extends User {
 
     getTotalAvailableBalance(): number {
         //
-        return 0;
+        return 9999999;
     }
 
     getTotalLockedBalance(): number {

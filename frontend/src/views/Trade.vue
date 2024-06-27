@@ -9,7 +9,7 @@
       </div>
 
       <!-- New Position Form -->
-      <OpenPosition :initialPosition="newPosition" @updateChart="updateChart" />
+      <OpenPosition :initialPosition="newPosition" @updateChart="updateChart" @positionOpened="fetchPositions" />
 
       <!-- Positions Table -->
       <PositionList :positions="positions" />

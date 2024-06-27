@@ -59,7 +59,7 @@ const props = defineProps<{
   initialPosition: Position;
 }>();
 
-const emits = defineEmits(['updateChart']);
+const emits = defineEmits(['updateChart', 'positionOpened']);
 
 const newPosition = ref<Position>({
   ...props.initialPosition,
@@ -127,6 +127,7 @@ const openPosition = async (direction: string) => {
     const response = await apiClient.post('/position', newPosition.value);
     console.log('Position opened:', response.data);
     // successful response
+    emits('positionOpened');
   } catch (error) {
     console.error('Error opening position:', error);
     Swal.fire({

@@ -15,11 +15,11 @@ export class Admin extends User {
     }
 
     auth(): void {
-        //
+        // regular auth
     }
 
     logout(): void {
-        //
+        // regular logout
     }
 
     updateSettings(settings: any[]): void {
