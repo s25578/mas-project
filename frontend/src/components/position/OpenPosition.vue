@@ -8,8 +8,7 @@
         </select>
       </div>
       <div>
-        <label class="block mb-2">Asset <span class="text-white ml-2 cursor-pointer" @click="showAssetDescription()">ⓘ</span></label> 
-        
+        <label class="block mb-2">Asset <span class="text-white ml-2 cursor-pointer" @click="showAssetDescription()">ⓘ</span></label>
         <select v-model="newPosition.asset" @change="updateChart" class="w-full p-2 bg-gray-700 rounded-md">
           <option v-for="asset in assets" :key="asset.id" :value="asset.name">{{ asset.name }}</option>
         </select>
@@ -130,7 +129,12 @@ const openPosition = async (direction: string) => {
     // successful response
   } catch (error) {
     console.error('Error opening position:', error);
-    // error
+    Swal.fire({
+      title: 'Error',
+      text: 'An error occurred while opening the position. Please try again.',
+      icon: 'error',
+      confirmButtonText: 'Close'
+    });
   }
 };
 
@@ -153,7 +157,7 @@ const showAssetDescription = () => {
   const asset = selectedAsset.value;
   Swal.fire({
     title: `${asset.name}`,
-    text: asset.description || 'No description available', 
+    text: asset.description || 'No description available',
     icon: 'info',
     confirmButtonText: 'Close'
   });
