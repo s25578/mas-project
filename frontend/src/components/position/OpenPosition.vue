@@ -41,7 +41,7 @@ interface Position {
   direction: string;
   openPrice: number;
   fee: number;
-  account: any
+  account: any;
 }
 
 interface Market {
@@ -55,21 +55,20 @@ interface Asset {
 }
 
 const props = defineProps<{
-  initialPosition: Position
+  initialPosition: Position;
 }>();
 
 const emits = defineEmits(['updateChart']);
 
-const newPosition = ref<Position>(
-    { ...props.initialPosition,
-      direction: 'buy',
-      openPrice: 75245,
-      fee: 1,
-      account: {
-        id: 1
-      }
-    }
-); // Initialize direction as 'buy'
+const newPosition = ref<Position>({
+  ...props.initialPosition,
+  direction: 'buy',
+  openPrice: 75245,
+  fee: 1,
+  account: {
+    id: 1,
+  },
+}); // Initialize direction as 'buy'
 
 const markets = ref<Market[]>([]);
 const assets = ref<Asset[]>([]);
@@ -97,7 +96,7 @@ const fetchAssets = async () => {
     const response = await apiClient.get(`/markets/${newPosition.value.market}/assets`);
     assets.value = response.data.assets;
     if (assets.value.length > 0) {
-      newPosition.value.asset = assets.value[0].id;
+      newPosition.value.asset = assets.value[0].name;
       updateChart();
     }
   } catch (error) {
@@ -105,10 +104,13 @@ const fetchAssets = async () => {
   }
 };
 
-watch(() => newPosition.value.asset, (newAsset) => {
-  console.log('newAsset.name', newAsset);
-  emits('updateChart', newAsset.name);
-});
+watch(
+  () => newPosition.value.asset,
+  (newAsset) => {
+    console.log('newAsset.name', newAsset);
+    emits('updateChart', newAsset);
+  }
+);
 
 const updateChart = () => {
   console.log('newPosition.value.asset', newPosition.value.asset);
@@ -123,7 +125,7 @@ const openPosition = async () => {
     // successful response
   } catch (error) {
     console.error('Error opening position:', error);
-    //  erro
+    // error
   }
 };
 
@@ -132,20 +134,8 @@ const sellPosition = async () => {
     newPosition.value.direction = 'sell';
     const response = await apiClient.post('/position', newPosition.value);
     console.log('Position opened:', response.data);
-
   } catch (error) {
     console.error('Error opening position:', error);
-
   }
 };
 </script>
-
-<style scoped>
-button {
-  transition: background-color 0.3s;
-}
-
-button:hover {
-  filter: brightness(110%);
-}
-</style>

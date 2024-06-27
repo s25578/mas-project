@@ -116,13 +116,14 @@ onMounted(() => {
 
 // handle chart updates from the OpenPosition component
 const updateChart = (newAsset: string) => {
+  console.log('updateChart', newAsset);
   newPosition.value.asset = newAsset;
 };
-
+/*
 // open a new position
 const openPosition = () => {
   console.log(newPosition.value);
-};
+};*/
 </script>
 
 <style scoped>
