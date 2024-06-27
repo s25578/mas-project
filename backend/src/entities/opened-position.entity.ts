@@ -20,7 +20,25 @@ export class OpenedPosition extends Position {
         postponeFeeRate?: number
     ) {
         super(direction, size, leverage, openPrice, fee, type, account, asset);
+
+        if (!this.isAssetUnique(asset)) {
+            throw new Error("Unique asset constraint violated");
+        }
+
+        if (!this.isLeverageAllowed(leverage)) {
+            throw new Error("Leverage is too big");
+        }
+
         this.postponeFeeRate = postponeFeeRate || 0;
+    }
+
+    isLeverageAllowed(leverage: number): boolean {
+        return this.account.trader.maxLeverage < leverage;
+    }
+
+    isAssetUnique(asset: Asset): boolean {
+        // implement
+        return true;
     }
 
     getPostponeFee(): number {

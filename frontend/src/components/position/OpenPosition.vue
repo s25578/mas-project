@@ -8,7 +8,8 @@
         </select>
       </div>
       <div>
-        <label class="block mb-2">Asset</label>
+        <label class="block mb-2">Asset <span class="text-white ml-2 cursor-pointer" @click="showAssetDescription()">ⓘ</span></label> 
+        
         <select v-model="newPosition.asset" @change="updateChart" class="w-full p-2 bg-gray-700 rounded-md">
           <option v-for="asset in assets" :key="asset.id" :value="asset.name">{{ asset.name }}</option>
         </select>
@@ -32,6 +33,7 @@
 <script setup lang="ts">
 import { ref, defineProps, defineEmits, watch, onMounted } from 'vue';
 import apiClient from '../../axiosConfig';
+import Swal from 'sweetalert2';
 
 interface Position {
   market: string;
@@ -72,6 +74,7 @@ const newPosition = ref<Position>({
 
 const markets = ref<Market[]>([]);
 const assets = ref<Asset[]>([]);
+let selectedAsset = ref<Asset | null>(null);
 
 onMounted(async () => {
   await fetchMarkets();
@@ -97,6 +100,7 @@ const fetchAssets = async () => {
     assets.value = response.data.assets;
     if (assets.value.length > 0) {
       newPosition.value.asset = assets.value[0].name;
+      selectedAsset.value = assets.value[0];
       updateChart();
     }
   } catch (error) {
@@ -139,5 +143,15 @@ const sellPosition = async () => {
   } catch (error) {
     console.error('Error opening position:', error);
   }
+};
+
+const showAssetDescription = () => {
+  const asset = selectedAsset.value;
+  Swal.fire({
+    title: `${asset.name}`,
+    text: asset.description || 'No description available', 
+    icon: 'info',
+    confirmButtonText: 'Close'
+  });
 };
 </script>

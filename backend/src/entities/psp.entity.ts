@@ -12,6 +12,18 @@ export class PSP implements CardProcessorInterface, BankTransferProcessorInterfa
     @Column('simple-array')
     roles: string[];
 
+    @Column({nullable: true})
+    durationLimit: number | null;
+
+    @Column({nullable: true})
+    isConfirmationRequired: boolean | null;
+
+    @Column('simple-array', {nullable: true})
+    cardTypes: string[] | null;
+
+    @Column('simple-array', {nullable: true})
+    processingTypes: string[] | null;
+
     @OneToMany(() => Transaction, (transaction) => transaction.psp)
     transactions: Transaction[];
 
@@ -27,6 +39,13 @@ export class PSP implements CardProcessorInterface, BankTransferProcessorInterfa
             throw new Error('A PSP must have at least one role.');
         }
         this.roles = roles;
+    }
+    
+    preAuth(pan: string, expiry: string, cvv: number): void {
+        if (!this.roles.includes(PSPRole.CARD)) {
+            throw new Error('This PSP cannot process pre-auth.');
+        }
+        throw new Error('Method not implemented.');
     }
 
     processCardPayment(amount: number): void {
