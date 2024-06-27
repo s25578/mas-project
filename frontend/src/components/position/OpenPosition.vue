@@ -120,6 +120,7 @@ const updateChart = () => {
 const openPosition = async () => {
   try {
     newPosition.value.direction = 'buy';
+    newPosition.value.openPrice = Math.floor(Math.random() * 100000);
     const response = await apiClient.post('/position', newPosition.value);
     console.log('Position opened:', response.data);
     // successful response
@@ -132,6 +133,7 @@ const openPosition = async () => {
 const sellPosition = async () => {
   try {
     newPosition.value.direction = 'sell';
+    newPosition.value.openPrice = Math.floor(Math.random() * 100000);
     const response = await apiClient.post('/position', newPosition.value);
     console.log('Position opened:', response.data);
   } catch (error) {
