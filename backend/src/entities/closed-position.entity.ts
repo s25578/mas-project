@@ -67,4 +67,6 @@ export class ClosedPosition extends Position {
     getDuration(): number {
         return this.closedAt - this.createdAt;
     }
+
+    
 }

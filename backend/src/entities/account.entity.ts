@@ -20,6 +20,12 @@ export class Account {
     @OneToMany(() => Transaction, transaction => transaction.account)
     transactions: Transaction[];
 
+    /**
+     * Create a new account
+     * @param trader Trader - Trader who owns the account
+     * @param isDemo boolean - Whether the account is a demo account
+     * @returns Account
+    */
     constructor(trader: Trader, isDemo?: boolean) {
         this.trader = trader;
         this.isDemo = isDemo || false;
