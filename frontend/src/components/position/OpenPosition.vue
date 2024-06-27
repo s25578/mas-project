@@ -1,6 +1,6 @@
 <template>
   <div class="bg-gray-800 p-4 rounded-md">
-    <form @submit.prevent="openPosition" class="space-y-4">
+    <form @submit.prevent="confirmOpenPosition('buy')" class="space-y-4">
       <div>
         <label class="block mb-2">Market</label>
         <select v-model="newPosition.market" @change="fetchAssets" class="w-full p-2 bg-gray-700 rounded-md">
@@ -24,7 +24,7 @@
       </div>
       <div class="flex space-x-4">
         <button type="submit" class="flex-1 bg-green-500 p-2 rounded-md">Buy</button>
-        <button type="button" @click="sellPosition" class="flex-1 bg-red-500 p-2 rounded-md">Sell</button>
+        <button type="button" @click="confirmOpenPosition('sell')" class="flex-1 bg-red-500 p-2 rounded-md">Sell</button>
       </div>
     </form>
   </div>
@@ -121,9 +121,9 @@ const updateChart = () => {
   emits('updateChart', newPosition.value.asset);
 };
 
-const openPosition = async () => {
+const openPosition = async (direction: string) => {
   try {
-    newPosition.value.direction = 'buy';
+    newPosition.value.direction = direction;
     newPosition.value.openPrice = Math.floor(Math.random() * 100000);
     const response = await apiClient.post('/position', newPosition.value);
     console.log('Position opened:', response.data);
@@ -134,14 +134,18 @@ const openPosition = async () => {
   }
 };
 
-const sellPosition = async () => {
-  try {
-    newPosition.value.direction = 'sell';
-    newPosition.value.openPrice = Math.floor(Math.random() * 100000);
-    const response = await apiClient.post('/position', newPosition.value);
-    console.log('Position opened:', response.data);
-  } catch (error) {
-    console.error('Error opening position:', error);
+const confirmOpenPosition = async (direction: string) => {
+  const result = await Swal.fire({
+    title: 'Are you sure?',
+    text: `Do you want to ${direction} this position?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, open it!',
+    cancelButtonText: 'No, cancel!',
+  });
+
+  if (result.isConfirmed) {
+    await openPosition(direction);
   }
 };
 
