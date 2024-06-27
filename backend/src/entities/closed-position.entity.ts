@@ -3,6 +3,7 @@ import { Position } from './position.entity';
 import {PositionType} from "../enums/position-type.enum";
 import {Account} from "./account.entity";
 import {Asset} from "./asset.entity";
+import { OpenedPosition } from './opened-position.entity';
 
 @ChildEntity()
 export class ClosedPosition extends Position {
@@ -12,25 +13,35 @@ export class ClosedPosition extends Position {
     @Column()
     closePrice: number;
 
-    constructor(
-        direction: string,
-        size: number,
-        leverage: number,
-        openPrice: number,
-        fee: number,
-        type: PositionType,
-        closePrice: number,
-        account: Account,
-        asset: Asset
-    ) {
-        super(direction, size, leverage, openPrice, fee, type, account, asset);
+    constructor(openedPosition: OpenedPosition, closePrice: number) {
+        super(
+            openedPosition.direction, 
+            openedPosition.size, 
+            openedPosition.leverage, 
+            openedPosition.openPrice, 
+            openedPosition.fee, 
+            openedPosition.type as PositionType, 
+            openedPosition.account, 
+            openedPosition.asset
+        );
+
+        this.type = PositionType.CLOSED;
         this.closedAt = Date.now();
         this.closePrice = closePrice;
+
+        // Not delete, since Single Table Inheritance Strategy is used
+        this.updateDatabase();
+
+        openedPosition = null;
+    }
+
+    private updateDatabase(): void {
+        // await this.repository.save(this);
     }
 
     getRealizedPnL(): number {
-        //
-        return 0;
+        const priceDifference = this.closePrice - this.openPrice;
+        return priceDifference * this.size;
     }
 
     getPnL(): number {
